@@ -28,14 +28,7 @@ public class BattleshipController {
         Game game = new Game(gameId);
         games.put(gameId, game);
 
-        String[][] playerBoard = new String[10][10];
-        for (int i = 0; i < playerBoard.length; i++) {
-            for (int j = 0; j < playerBoard[i].length; j++) {
-                playerBoard[i][j] = game.getPlayerGrid().getCell(i, j).getStatus().toString();
-            }
-        }
-
-        return new ResponseEntity<>(new StartGameResponse(gameId, playerBoard), HttpStatus.OK);
+        return new ResponseEntity<>(new StartGameResponse(gameId, game.getRemainingShots()), HttpStatus.OK);
     }
 
     @PostMapping("/{gameId}/move")
@@ -47,8 +40,7 @@ public class BattleshipController {
                     HttpStatus.BAD_REQUEST, null), HttpStatus.BAD_REQUEST);
         }
 
-
-        String moveResult = game.processMove(move.getX(), move.getY());
+//        String moveResult = game.processMove(move.getX(), move.getY());
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

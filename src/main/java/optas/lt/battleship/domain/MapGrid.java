@@ -16,7 +16,7 @@ public class MapGrid {
     private void initialiseEmptyGrid() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                grid[i][j] = new Cell();
+                grid[i][j] = new Cell(CellState.EMPTY);
             }
         }
     }
@@ -58,7 +58,7 @@ public class MapGrid {
             if (col + length > size) return false;
             for (int i = col - 1; i <= col + length; i++) {
                 for (int j = row - 1; j <= row + 1; j++) {
-                    if (isWithinBounds(j, i) && grid[j][i].getStatus() != CellState.HIDDEN) {
+                    if (isWithinBounds(j, i) && grid[j][i].getStatus() != CellState.EMPTY) {
                         return false;
                     }
                 }
@@ -67,7 +67,7 @@ public class MapGrid {
             if (row + length > size) return false;
             for (int i = row - 1; i <= row + length; i++) {
                 for (int j = col - 1; j <= col + 1; j++) {
-                    if (isWithinBounds(i, j) && grid[i][j].getStatus() != CellState.HIDDEN) {
+                    if (isWithinBounds(i, j) && grid[i][j].getStatus() != CellState.EMPTY) {
                         return false;
                     }
                 }
@@ -82,9 +82,9 @@ public class MapGrid {
     }
 
     // Attack a specific cell
-    public boolean attack(int row, int col) {
-        return grid[row][col].receiveAttack();
-    }
+//    public boolean attack(int row, int col) {
+//        return grid[row][col].receiveAttack();
+//    }
 
     // Get the status of the grid for display or logic processing
     public Cell[][] getGridStatus() {
@@ -104,24 +104,5 @@ public class MapGrid {
             }
         }
         return true;
-    }
-
-    // Randomly place ships on the board
-    public void placeShips(MapGrid grid) {
-        Random rand = new Random();
-        int[] shipSizes = {5, 4, 3, 3, 2, 2, 1, 1, 1};
-
-        for (int shipSize : shipSizes) {
-            boolean placed = false;
-            while (!placed) {
-                int row = rand.nextInt(size);
-                int col = rand.nextInt(size);
-                boolean horizontal = rand.nextBoolean();
-                if (grid.canPlaceShip(row, col, shipSize, horizontal)) {
-                    grid.placeShip(row, col, shipSize, horizontal);
-                    placed = true;
-                }
-            }
-        }
     }
 }

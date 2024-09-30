@@ -1,23 +1,23 @@
 package optas.lt.battleship.domain;
 
+import lombok.Getter;
 import optas.lt.battleship.domain.enums.CellState;
 
 public class Cell {
+
+    @Getter
     private CellState status;
+
+    @Getter
     private Battleship ship;
 
-    public Cell() {
-        this.status = CellState.HIDDEN;
+    public Cell(CellState state) {
+        this.status = state;
     }
 
-    // Copy constructor to deep copy Cell objects
     public Cell(Cell cell) {
         this.status = cell.status;
         this.ship = cell.ship;
-    }
-
-    public CellState getStatus() {
-        return status;
     }
 
     public void putShip(Battleship ship) {
@@ -28,7 +28,8 @@ public class Cell {
     public boolean receiveAttack() {
         if (status == CellState.SHIP) {
             status = CellState.SHIPHIT;
-            if (ship != null && ship.receiveDamage()) {
+            ship.receiveDamage();
+            if (ship != null && ship.checkIsDamaged()) {
                 status = CellState.DESTROYED;
             }
             return true; // Hit

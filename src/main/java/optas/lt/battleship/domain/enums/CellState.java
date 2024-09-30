@@ -1,10 +1,9 @@
 package optas.lt.battleship.domain.enums;
 
 public enum CellState {
-    HIDDEN,
     EMPTY,
-    EMPTYHIT,
     SHIP,
+    EMPTYHIT,
     SHIPHIT,
     DESTROYED
 }

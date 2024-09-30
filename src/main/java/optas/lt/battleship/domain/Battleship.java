@@ -1,7 +1,7 @@
 package optas.lt.battleship.domain;
 
 public class Battleship {
-    private int size;
+    private final int size;
     private int hitCount;
 
     public Battleship(int size) {
@@ -9,9 +9,11 @@ public class Battleship {
         this.hitCount = 0;
     }
 
-    // Method to receive damage and determine if the ship is destroyed
-    public boolean receiveDamage() {
+    public void receiveDamage() {
         hitCount++;
-        return hitCount >= size; // Returns true if the ship is destroyed
+    }
+
+    public boolean checkIsDamaged() {
+        return hitCount >= size; // true if the ship is destroyed
     }
 }
