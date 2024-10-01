@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/api")
 public class BattleshipController {
     private final Map<String, Game> games = new HashMap<>();
 
