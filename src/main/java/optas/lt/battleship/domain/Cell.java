@@ -29,7 +29,7 @@ public class Cell {
         if (status == CellState.SHIP) {
             status = CellState.SHIPHIT;
             ship.receiveDamage();
-            if (ship != null && ship.checkIsDamaged()) {
+            if (ship != null && ship.checkIsDestroyed()) {
                 status = CellState.DESTROYED;
             }
             return true; // Hit
@@ -37,7 +37,7 @@ public class Cell {
             status = CellState.EMPTYHIT;
             return false; // Miss
         }
-        return false; // Cell already attacked
+        return false; // Already attacked
     }
 }
 

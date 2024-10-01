@@ -2,8 +2,6 @@ package optas.lt.battleship.domain;
 
 import optas.lt.battleship.domain.enums.CellState;
 
-import java.util.Random;
-
 public class MapGrid {
     private int size;
     private Cell[][] grid;
@@ -21,18 +19,17 @@ public class MapGrid {
         }
     }
 
-    /* Initialize the map with a pre-defined 2D array of Cells*/
-    public void initialise(Cell[][] map) {
-        copy2dArray(grid, map);
-    }
-
-    private void copy2dArray(Cell[][] output, Cell[][] toBeCopied) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                output[i][j] = new Cell(toBeCopied[i][j]);
-            }
-        }
-    }
+//    public void initialise(Cell[][] map) {
+//        copy2dArray(grid, map);
+//    }
+//
+//    private void copy2dArray(Cell[][] output, Cell[][] toBeCopied) {
+//        for (int i = 0; i < size; i++) {
+//            for (int j = 0; j < size; j++) {
+//                output[i][j] = new Cell(toBeCopied[i][j]);
+//            }
+//        }
+//    }
 
     public boolean placeShip(int row, int col, int length, boolean horizontal) {
         if (canPlaceShip(row, col, length, horizontal)) {
@@ -51,7 +48,6 @@ public class MapGrid {
         return false;
     }
 
-    // Check if a ship can be placed at the specified coordinates
     public boolean canPlaceShip(int row, int col, int length, boolean horizontal) {
         // Check if the ship fits within the grid
         if (horizontal) {
@@ -76,20 +72,17 @@ public class MapGrid {
         return true;
     }
 
-    // Helper method to check if coordinates are within bounds
     private boolean isWithinBounds(int row, int col) {
         return row >= 0 && row < size && col >= 0 && col < size;
     }
 
-    // Attack a specific cell
-//    public boolean attack(int row, int col) {
+//    public boolean attackCell(int row, int col) {
 //        return grid[row][col].receiveAttack();
 //    }
-
-    // Get the status of the grid for display or logic processing
-    public Cell[][] getGridStatus() {
-        return grid;
-    }
+//
+//    public Cell[][] getGridStatus() {
+//        return grid;
+//    }
 
     public Cell getCell(int row, int col) {
         return grid[row][col];

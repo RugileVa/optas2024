@@ -1,9 +1,9 @@
 package optas.lt.battleship.controllers;
 
-import optas.lt.battleship.domain.MoveRequest;
+import optas.lt.battleship.domain.dtos.MoveRequest;
+import optas.lt.battleship.domain.dtos.MoveResult;
 import optas.lt.battleship.domain.dtos.StartGameResponse;
 import optas.lt.battleship.services.Game;
-import optas.lt.battleship.utilities.BattleshipResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +32,15 @@ public class BattleshipController {
     }
 
     @PostMapping("/{gameId}/move")
-    public ResponseEntity<BattleshipResponse> handlePlayerMove(@PathVariable String gameId, @RequestBody MoveRequest move) {
+    public ResponseEntity<MoveResult> handlePlayerMove(@PathVariable String gameId, @RequestBody MoveRequest move) {
         Game game = games.get(gameId);
 
         if (game == null) {
-            return new ResponseEntity<>(new BattleshipResponse("The game was not found",
-                    HttpStatus.BAD_REQUEST, null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-//        String moveResult = game.processMove(move.getX(), move.getY());
+        MoveResult moveResult = game.processMove(move.getX(), move.getY());
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(moveResult, HttpStatus.OK);
     }
 }

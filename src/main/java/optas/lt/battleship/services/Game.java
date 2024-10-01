@@ -5,6 +5,7 @@ import optas.lt.battleship.domain.Cell;
 import optas.lt.battleship.domain.MapGrid;
 import optas.lt.battleship.domain.dtos.MoveResult;
 import optas.lt.battleship.domain.enums.CellState;
+import optas.lt.battleship.domain.enums.GameState;
 
 import java.util.Random;
 
@@ -47,39 +48,36 @@ public class Game {
         }
     }
 
-//    public MoveResult processMove(int row, int col) {
-////        if (isGameOver) {
-////            return new MoveResult("Game is already over!", true, this.getPlayerGrid(), remainingShots);
-////        }
-//
-////        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
-////            return new MoveResult("Invalid coordinates!", false, playerGrid.getBoard(), remainingShots);
-////        }
-//
-//        Cell targetCell = computerGrid.getCell(row, col);
-////        if (targetCell.getStatus() != CellState.HIDDEN) {
-////            return new MoveResult("You already attacked this cell!", false, playerGrid.getBoard(), remainingShots);
-////        }
-//
-//        boolean hit = targetCell.receiveAttack();
-//        if (hit) {
-//            if (targetCell.getStatus() == CellState.DESTROYED) {
-//                if (checkAllShipsSunk()) {
-//                    isGameOver = true;
-//                    return new MoveResult("You sunk all ships! You won!", true, playerGrid.getBoard(), remainingShots);
-//                }
-//                return new MoveResult("Hit and sunk!", false, playerGrid.getBoard(), remainingShots);
-//            }
-//            return new MoveResult("Hit!", false, playerGrid.getBoard(), remainingShots);
-//        } else {
-//            remainingShots--;
-//            if (remainingShots == 0) {
-//                isGameOver = true;
-//                return new MoveResult("Miss! No shots remaining, you lost!", true, playerGrid.getBoard(), remainingShots);
-//            }
-//            return new MoveResult("Miss!", false, playerGrid.getBoard(), remainingShots);
-//        }
-//    }
+    public MoveResult processMove(int row, int col) {
+        if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+            return new MoveResult(GameState.PLAYING, null, remainingShots);
+        }
+
+        Cell targetCell = computerGrid.getCell(row, col);
+        if (targetCell.getStatus() == CellState.SHIPHIT || targetCell.getStatus() == CellState.EMPTYHIT ||  targetCell.getStatus() == CellState.DESTROYED) {
+            remainingShots--;
+            return new MoveResult(GameState.PLAYING, targetCell.getStatus(), remainingShots);
+        }
+
+        boolean hit = targetCell.receiveAttack();
+        if (hit) {
+            if (targetCell.getStatus() == CellState.DESTROYED) {
+                if (checkAllShipsSunk()) {
+                    isGameOver = true;
+                    return new MoveResult(GameState.WIN, CellState.DESTROYED, remainingShots); // won
+                }
+                return new MoveResult(GameState.PLAYING, CellState.DESTROYED, remainingShots); // hit and sunk
+            }
+            return new MoveResult(GameState.PLAYING, CellState.SHIPHIT, remainingShots); // hit
+        } else {
+            remainingShots--;
+            if (remainingShots == 0) {
+                isGameOver = true;
+                return new MoveResult(GameState.LOSE, CellState.EMPTYHIT, remainingShots); // empty, lose
+            }
+            return new MoveResult(GameState.PLAYING, CellState.EMPTYHIT, remainingShots); // empty
+        }
+    }
 
     private boolean checkAllShipsSunk() {
         return computerGrid.areAllShipsSunk();

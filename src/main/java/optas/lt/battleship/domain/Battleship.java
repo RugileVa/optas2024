@@ -13,7 +13,7 @@ public class Battleship {
         hitCount++;
     }
 
-    public boolean checkIsDamaged() {
-        return hitCount >= size; // true if the ship is destroyed
+    public boolean checkIsDestroyed() {
+        return hitCount >= size;
     }
 }
